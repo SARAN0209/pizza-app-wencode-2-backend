@@ -37,10 +37,10 @@ const port=process.env.PORT||5000;
 
 
 
+
+app.use("/products", productRouter);
+app.use("/users", userRouter);
 app.listen(port,()=>{
     console.log(`App is Running http://localhost:${port}`);
 });
-app.use("/products", productRouter);
-app.use("/users", userRouter);
 
-app.listen(process.env.PORT);
