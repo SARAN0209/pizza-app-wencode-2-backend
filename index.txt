@@ -1,0 +1,3 @@
+MONGO_URL = 'mongodb+srv://saranc:pizzawebcodebackend@pizza-webcode-backend.tolgowg.mongodb.net/?retryWrites=true&w=majority'
+PORT = 8000
+SECRET_KEY = 'SECRETKEY'
