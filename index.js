@@ -16,8 +16,13 @@ console.log(process.env.PORT)
 const port= process.env.PORT;
 
 
+app.get('/', (req, res) => {
+    res.send('Welcome to my pizza server!');
+})
+
 app.use("/products", productRouter);
 app.use("/users", userRouter);
+
 
 app.listen(port,()=>{
     console.log(`App is Running http://localhost:${port}`);
