@@ -1,14 +1,13 @@
 const mongoose=require("mongoose");
-// const Schema=mongoose.Schema;
 
 
 const productSchema = mongoose.Schema({
-    name:{type: String,require},
+    name:{type: String,required:true},
  
-    price:{type: Number,require},
+    price:{type: Number,required:true},
   
-    image:{type: String,require},
-    desc:{type: String,require}
+    image:{type: String,required:true},
+    desc:{type: String,required:true}
 
 },{
     timestamps:true,
