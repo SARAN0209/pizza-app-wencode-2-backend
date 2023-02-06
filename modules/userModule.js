@@ -18,9 +18,8 @@ const userSchema= new mongoose.Schema({
         required:true,
         trim:true
     },
-	confrimPassword :{
+	confrimpassword :{
         type:String,
-        required:true,
         trim:true
     }
 })
