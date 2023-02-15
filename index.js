@@ -10,8 +10,8 @@ app.use(express.json());
 db();
 app.use(cors())
 //Middleware
-app.use("/api",userRouter);
-app.use("/api",productRouter);
+// app.use("/api",userRouter);
+// app.use("/api",productRouter);
 console.log(process.env.PORT)
 const port= process.env.PORT;
 
