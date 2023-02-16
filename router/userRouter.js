@@ -10,7 +10,7 @@ router.post("/signup",async(req,res)=>{
         const exuser= await user.findOne({email:req.body.email});
         if(exuser)
            return res.json({
-            message:"Your Already User Please Login Here",
+            message:"You are already exist User Please SignIn Here",
             success:false
 
            }).status(409);
@@ -31,10 +31,9 @@ router.post("/signup",async(req,res)=>{
     
 })
 router.post("/signin",async(req,res)=>{
-
+    
     try {
         const users=await user.findOne({email:req.body.email})
-        // console.log(users);
         if(!users){
         return res.send({message:"Your not exist user please signup here"}).status(409);
         }
