@@ -5,72 +5,49 @@ const jwt =require("jsonwebtoken");
 const bcrypt=require("bcrypt")
 
 
-const checkpassword = (password, confirmpassword) => {
-    return password !== confirmpassword ? false : true;
-  };
 router.post("/signup",async(req,res)=>{
     try {
-        const existuser= await user.findOne({email:req.body.email});
-        if(existuser)
-           return res.status(400).send({
-            message:"Your Already existuser Please Login Here"})
+        const exuser= await user.findOne({email:req.body.email});
+        if(exuser)
+           return res.json({
+            message:"You are already exist User Please SignIn Here",
+            success:false
 
-            const isSamePassword = checkpassword(
-                req.body.password,
-                req.body.confirmpassword
-            );
-            if(!isSamePassword){
-                return res.status(400).send({message:"Password Dosn't Match"});
-            }else delete req.body.confirmpassword;
+           }).status(409);
           
-          //password hash
-           const salt=await bcrypt.genSalt(10);
-           req.body.password=await bcrypt.hash(req.body.password,salt)
+          
+           const salt=await bcrypt.genSalt(Number(10));
+           const hashpassword=await bcrypt.hash(req.body.password,salt)
            
-           //save in DB
-           const newEmployees = new user({
-            name:req.body.name,
-            email: req.body.email,
-            password: req.body.password,
-        });
-        console.log(newEmployees);
-        await newEmployees.save((err,data)=>{
-            if(err) {
-                return res.status(400).send({
-                  message: "Error while adding new employee. Please check the data",
-                });
-              }
-              res.status(201).send({
-                employeeId: data._id,
-                message: "Employee has been added successfully.",
-              });
-        })
-        }catch (error) {
-            res.status(500).send({
-              message: "Internal Server Error",
-            });
-          }
+           await new user({...req.body,password:hashpassword}).save();
+          return res.send({message:"user create Successfully"}).status(201)
+        
+        
+    } catch (error) {
+        console.log(err);
+        res.send({message:"Internal Server Error"}).status(500)
+        
+    }
     
 })
 router.post("/signin",async(req,res)=>{
-
+    
     try {
         const users=await user.findOne({email:req.body.email})
-        console.log(users);
         if(!users){
-        return res.send({message:"Your not exist user please signup here"}).status(400);
+        return res.send({message:"Your not exist user please signup here"}).status(409);
         }
        
-        const isSamePassword=await bcrypt.compare(req.body.password,users.password);
-        console.log(isSamePassword);
-        if(!isSamePassword){
-        return res.send({message:"Please Enter Valid Password"}).status(400);
+        const validpass=await bcrypt.compare(req.body.password,users.password);
+        // console.log(validpass);
+        if(!validpass){
+        return res.send({message:"Please Enter Valid Password"}).status(409);
         }
         
        
    
        
-        const token=jwt.sign({users},process.env.SECRET_KEY,{expiresIn: "1hr"})
+        const token=jwt.sign(users.toObject(),process.env.SECRET_KEY,{expiresIn: "1hr"})
      
         
          res.send({token:token}).status(200);
@@ -106,7 +83,6 @@ router.get("/getuser",(req,res,next)=>{
     })
 
 })
-
 
 
 
