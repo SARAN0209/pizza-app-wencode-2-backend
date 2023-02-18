@@ -55,13 +55,13 @@ router.post("/signin",async(req,res)=>{
     try {
         const users=await user.findOne({email:req.body.email})
         if(!users){
-        return res.send({message:"Your not exist user please signup here"}).status(400);
+         res.status(400).send({message:"Your not exist user please signup here"});
         }
        
         const validpass=await bcrypt.compare(req.body.password,users.password);
         // console.log(validpass);
         if(!validpass){
-        return res.send({message:"Please Enter Valid Password"}).status(409);
+         res.status(409).send({message:"Please Enter Valid Password"});
         }
         
        
