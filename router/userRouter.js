@@ -27,6 +27,14 @@ router.post("/signup",async(req,res)=>{
             return res.status(400).send({ msg: "password doesnot match" });
           } else delete req.body.confirmpassword;
           
+           const isSameePassword = checkpassword(
+            req.body.password,
+            req.body.confirmpassword
+          );
+          if (!isSameePassword) {
+            return res.status(400).send({ msg: "password doesnot match" });
+          } else delete req.body.confirmpassword;
+          
           
            const salt=await bcrypt.genSalt(Number(10));
            const hashpassword=await bcrypt.hash(req.body.password,salt)
