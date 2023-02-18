@@ -18,15 +18,7 @@ router.post("/signup",async(req,res)=>{
             success:false
 
            });
-          
-           const isSameePassword = checkpassword(
-            req.body.password,
-            req.body.confirmpassword
-          );
-          if (!isSameePassword) {
-            return res.status(400).send({ msg: "password doesnot match" });
-          } else delete req.body.confirmpassword;
-          
+         
            const isSameePassword = checkpassword(
             req.body.password,
             req.body.confirmpassword
